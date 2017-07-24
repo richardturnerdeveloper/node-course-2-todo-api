@@ -67,7 +67,7 @@ app.delete("/todos/:id", (req,res) => {
     if(!todo){
       return res.send(404).send('No todo exists');
     }
-    res.status(200).send(todo);
+    res.status(200).send({todo});
   }).catch((e) => {
     res.status(404).send(e);
   });
