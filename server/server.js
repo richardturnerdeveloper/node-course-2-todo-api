@@ -28,7 +28,9 @@ app.post("/todos", (req,res) => {
   });
   Todo.find({text: req.body.text}).then((foundTodo) => {
     if (foundTodo){
+      if (foundTodo === req.body.text){
       return res.send('Todo already exists!');
+      }
     }
   });
   todo.save().then((doc) => {
