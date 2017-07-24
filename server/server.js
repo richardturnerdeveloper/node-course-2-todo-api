@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser')
+const _ = require('lodash');
 
 var {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
@@ -25,14 +26,6 @@ app.post("/users", (req,res) => {
 app.post("/todos", (req,res) => {
   var todo = new Todo({
     text: req.body.text
-  });
-  Todo.find({text: req.body.text}).then((foundTodo) => {
-    if (foundTodo){
-      var duplicateTodo = foundTodo.text;
-      if (duplicateTodo === req.body.text){
-      return res.send('Todo already exists!');
-      }
-    }
   });
   todo.save().then((doc) => {
     res.send(doc);
