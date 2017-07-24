@@ -28,7 +28,8 @@ app.post("/todos", (req,res) => {
   });
   Todo.find({text: req.body.text}).then((foundTodo) => {
     if (foundTodo){
-      if (foundTodo === req.body.text){
+      var duplicateTodo = foundTodo.text;
+      if (duplicateTodo === req.body.text){
       return res.send('Todo already exists!');
       }
     }
