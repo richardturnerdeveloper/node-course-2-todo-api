@@ -26,6 +26,11 @@ app.post("/todos", (req,res) => {
   var todo = new Todo({
     text: req.body.text
   });
+  Todo.find({text: req.body.text}).then((foundTodo) => {
+    if (foundTodo){
+      return res.send('Todo already exists!');
+    }
+  });
   todo.save().then((doc) => {
     res.send(doc);
   }, (e) => {
