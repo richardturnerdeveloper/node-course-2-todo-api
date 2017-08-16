@@ -53,6 +53,16 @@ UserSchema.methods.generateAuthToken = function () {
     });
 }
 
+UserSchema.methods.removeToken = function (token){
+  var user = this;
+
+  return user.update({
+    $pull: {
+      tokens: {token}
+    }
+  });
+}
+
 UserSchema.statics.findByToken = function (token) {
   var User = this;
   var decoded;
@@ -68,9 +78,27 @@ UserSchema.statics.findByToken = function (token) {
   });
 }
 
+UserSchema.statics.findByCredentials = function (email, password){
+  var User = this;
+
+  return User.findOne({email})
+    .then((user) => {
+      if(!user){
+        return Promise.reject();
+      }
+      return new Promise((resolve, reject) => {
+        bcrypt.compare(password, user.password, function (err, res){
+          if (res){
+          resolve(user);
+          }
+          reject();
+        });
+      });
+    });
+}
+
 UserSchema.pre('save', function(done) {
   var user = this;
-  console.log('WPORKING');
   if (user.isModified('password')){
     bcrypt.genSalt(10, user.password, (err, salt) => {
       bcrypt.hash(user.password, salt, (err, hash) => {
