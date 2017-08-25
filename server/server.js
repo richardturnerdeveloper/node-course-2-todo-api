@@ -1,4 +1,4 @@
-const {env, port} = require('./config/config');
+var config = require('./config/config');
 
 const _ = require('lodash');
 const express = require('express');
@@ -156,8 +156,8 @@ app.get("/users/me", authenticate, (req, res) => {
 
 
 
-app.listen(port, () => {
-  console.log(`Server started on ${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server started on ${process.env.PORT}`);
 });
 
 module.exports = {
